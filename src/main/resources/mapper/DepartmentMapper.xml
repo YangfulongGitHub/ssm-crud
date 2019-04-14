@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.yang.crud.dao.DepartmentMapper">
+	
+	<!-- 增加部门 -->
+	<insert id="addDepartment" parameterType="cn.com.yang.crud.bean.Department">
+		INSERT INTO department
+			<trim prefix="(" suffix=")" suffixOverrides=",">
+				<if test="depId !=null">
+					dep_id,
+				</if>
+				<if test="depName !=null">
+					dep_name
+				</if>
+			</trim>
+			
+			<trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+				<if test="depId !=null">
+					 #{depId},
+				</if>
+				<if test="depName !=null">
+					#{depName}
+				</if>
+			</trim>
+	</insert>
+	
+	<!-- 查找所有的部门public List<Department> getAllDeptInfo(); -->
+	<resultMap type="cn.com.yang.crud.bean.Department" id="getAllDeptInfoResultMap">
+		<id column="dep_id" property="depId"/>
+		<result column="dep_name" property="depName"/>
+	</resultMap>
+	<select id="getAllDeptInfo" resultMap="getAllDeptInfoResultMap">
+		SELECT dep_id,dep_name from department
+	</select>
+</mapper>
