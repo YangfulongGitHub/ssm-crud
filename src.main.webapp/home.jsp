@@ -23,7 +23,7 @@
 	<div class="row">
 	  <div class="col-md-2 col-md-offset-10">
 	  	<button id="emp_add_but_Modal" class="btn btn-primary">新增</button>
-	  	<button id="emp_delete_but" class="btn btn-danger">删除</button>
+	  	<button id="emp_delete_batch" class="btn btn-danger">删除</button>
 	  </div>
 	</div>
 	<!-- 员工列表 -->
@@ -202,7 +202,7 @@
 		$("#tableid tbody").empty();
 		//var emps=result.extend.pageinfo.list;
 		 $.each(result.extend.pageinfo.list,function(index,item){
-			 	var checkbox =$("<td><input type='checkbox' id='check_box_items'><td>");
+			 	var checkbox =$("<td><input type='checkbox' class='check_box_items'><td>");
 				var empId =$("<td></td>").append(item.empId);
 				var empLastname=$("<td></td>").append(item.empLastname);
 				var gender=$("<td></td>").append(item.gender=="1"?"男":"女");
@@ -470,7 +470,7 @@
 	//给删除按钮添加点击事件
 	$(document).on("click",".delete_btn",function(){
 		//弹出确认框：确认要删除XXX吗
-		var empname=$(this).parents("tr").find("td:eq(1)").text();
+		var empname=$(this).parents("tr").find("td:eq(3)").text();
 		if(confirm("你确认要删除"+empname+"这条信息吗")){
 			//调用删除方法
 			deleteEmpByID($(this).attr("del-btn-id"));
@@ -487,6 +487,39 @@
 			}
 		})
 	}
+	//全选。全部选功能
+	$("#checkboxall").click(function(){
+		//alert($(this).attr("checked"));
+		//使用attr获取checked的到的是undefined
+		//alert($(this).prop("checked"));
+		$(".check_box_items").prop("checked",$(this).prop("checked"));
+	});
+	$(document).on("click",".check_box_items",function(){
+		var checklength=$(".check_box_items").length;
+		var flag=$(".check_box_items:checked").length==checklength;
+		$("#checkboxall").prop("checked",flag);
+	})
+	//批量删除
+	$("#emp_delete_batch").click(function(){
+		//循环被选中的员工
+		var empname=""
+		var empId=""
+		$.each($(".check_box_items:checked"),function(index,item){
+			empname +=$(item).parents("tr").find("td:eq(3)").text()+",";
+			empId +=$(item).parents("tr").find("td:eq(2)").text()+",";
+		})
+		if(confirm("你确认要删除"+empname+"这条信息吗")){
+			//发送ajax请求
+			$.ajax({
+				url:"${APP_PATH}/batchDeleteEmpById/"+empId,
+				type:"DELETE",
+				success:function(result){
+					alert("删除成功");
+					To_Page(pageNum);
+				}
+			})
+		}
+	});
 	</script>
 </body>
 

@@ -31,4 +31,7 @@ public interface EmployeeMapper {
 	//查找用户名是否重复
 	public int userNameCheck(String empname);
 	
+	//批量删除
+	public void batchDeleteEmpById(List<Integer> empid);
+	
 }

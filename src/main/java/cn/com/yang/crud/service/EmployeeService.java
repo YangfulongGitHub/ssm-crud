@@ -38,4 +38,8 @@ public class EmployeeService {
 	public void deleteEmpById(Integer empid) {
 		employeeMapper.deleteEmpById(empid);
 	}
+	//ÅúÁ¿É¾³ý
+	public void batchDeleteEmpById(List<Integer> empid) {
+		employeeMapper.batchDeleteEmpById(empid);
+	}
 }

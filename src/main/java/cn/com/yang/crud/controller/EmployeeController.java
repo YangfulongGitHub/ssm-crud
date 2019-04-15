@@ -1,5 +1,6 @@
 package cn.com.yang.crud.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -93,4 +94,15 @@ public class EmployeeController {
 		employeeService.deleteEmpById(empid);
 		return Massage.success();
 	}
+	
+	//批量删除员工
+	@ResponseBody
+	@RequestMapping(value="/batchDeleteEmpById/{empId}",method=RequestMethod.DELETE)
+	public Massage batchDeleteEmpById(@PathVariable("empId")List<Integer> empId){
+		List<Integer> list=new ArrayList<Integer>();
+		list.addAll(empId);
+		//System.out.println("********"+list+"***********");
+		employeeService.batchDeleteEmpById(list);
+		return Massage.success();
+	} 
 }

@@ -66,4 +66,15 @@
 	<select id="getEmpInfoById" resultType="cn.com.yang.crud.bean.Employee">
 		select emp_id,emp_lastname,gender,email,depid from employee where emp_id=#{emp_id}
 	</select>
+	
+	<!--批量删除员工 -->
+	<delete id="batchDeleteEmpById" parameterType="java.util.List">
+		DELETE FROM employee where emp_id in
+		<foreach collection="list" item="emp_id"
+                 open="(" close=")" index="index" separator=",">
+            #{emp_id}
+        </foreach>
+	</delete>
+	
+	
 </mapper>
